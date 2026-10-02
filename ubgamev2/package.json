@@ -1,0 +1,7 @@
+{
+  "name": "unbutton-button-game",
+  "private": true,
+  "dependencies": {
+    "@netlify/blobs": "latest"
+  }
+}

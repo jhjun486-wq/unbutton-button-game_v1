@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>UNBUTTON 2027</title>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:#f4f0e8;color:#171717;font-family:Arial,"Noto Sans KR",sans-serif;touch-action:manipulation}
+.screen{min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px}
+.hidden{display:none!important}
+.logo{font-size:clamp(45px,14vw,90px);font-weight:900;letter-spacing:-.08em}
+.sub{font-size:12px;letter-spacing:.18em;margin-top:8px}
+.card{width:min(92vw,480px);background:#fff;padding:28px;border:2px solid #171717}
+h1{margin:0 0 18px;font-size:28px;letter-spacing:-.05em}
+input{width:100%;padding:15px;border:2px solid #171717;background:#fff;font-size:16px;outline:none}
+.primary{width:100%;margin-top:14px;padding:16px;background:#171717;color:#fff;border:0;font-weight:800;font-size:16px}
+.note{font-size:12px;line-height:1.6;opacity:.6;margin-top:12px}
+.hud{width:min(94vw,620px);display:flex;justify-content:space-between;align-items:end;margin-bottom:14px}
+.count{font-weight:800}.timer{font-size:28px;font-weight:900;font-variant-numeric:tabular-nums}
+.board{position:relative;width:min(94vw,620px);height:min(70vh,680px);min-height:450px;overflow:hidden;background:#ded8cc;border:3px solid #171717}
+.thread{position:absolute;left:0;right:0;height:3px;background:#171717;opacity:.2}
+.button{position:absolute;width:48px;height:48px;border-radius:50%;background:#222;border:5px solid #eee;box-shadow:0 3px 0 #111}
+.button:before{content:"";width:8px;height:8px;border-radius:50%;background:#eee;box-shadow:14px 0 #eee,0 14px #eee,14px 14px #eee}
+.button.pulled{opacity:0;transform:translateY(80px) rotate(140deg) scale(.5);pointer-events:none;transition:.18s}
+.message{font-size:12px;opacity:.6;margin-top:12px}
+.result-title{font-size:clamp(42px,13vw,86px);font-weight:900;letter-spacing:-.08em}
+.result-time{font-size:42px;font-weight:900;margin-top:8px}.small{opacity:.6;font-size:12px;margin-top:8px}
+.leader{width:min(92vw,520px);margin-top:24px}.leader h2{font-size:18px}.row{display:flex;justify-content:space-between;border-bottom:1px solid #ccc;padding:10px 0;font-size:14px}
+.error{color:#b00020;font-size:13px;margin-top:10px}
+</style>
+</head>
+<body>
+<section id="start" class="screen">
+  <div class="logo">UNBUTTON</div><div class="sub">BUTTON PULLING GAME · 2027</div>
+  <button class="primary" style="width:auto;padding:16px 36px;margin-top:40px" onclick="go('nickname')">START</button>
+</section>
+
+<section id="nickname" class="screen hidden">
+  <div class="card">
+    <h1>닉네임을 입력해주세요</h1>
+    <input id="nicknameInput" maxlength="12" placeholder="예: 세현" autocomplete="nickname">
+    <button class="primary" onclick="beginGame()">게임 시작</button>
+    <div class="note">게임 기록에 표시될 이름입니다. 12자 이내로 입력해주세요.</div>
+    <div id="nickError" class="error"></div>
+  </div>
+</section>
+
+<section id="game" class="screen hidden" style="justify-content:flex-start;padding-top:18px">
+  <div class="hud"><div class="count"><span id="count">0</span> / 30</div><div class="timer" id="timer">0.00</div></div>
+  <div id="board" class="board"></div><div class="message">단추를 터치해서 하나씩 풀어주세요.</div>
+</section>
+
+<section id="info" class="screen hidden">
+  <div class="card">
+    <h1>기록을 저장할게요</h1>
+    <p id="scoreSummary"></p>
+    <input id="phone" inputmode="tel" maxlength="13" placeholder="전화번호 010-0000-0000">
+    <label style="display:flex;gap:10px;margin-top:16px;font-size:13px;line-height:1.5">
+      <input id="consent" type="checkbox" style="width:20px;height:20px;flex:none">
+      <span>이벤트 당첨 안내 및 경품 지급을 위해 전화번호를 수집·이용하는 것에 동의합니다.</span>
+    </label>
+    <div class="note">수집 항목: 닉네임, 전화번호 / 이용 목적: 기록 확인 및 당첨자 연락 / 동의 거부 시 경품 대상 기록 저장이 제한될 수 있습니다.</div>
+    <button class="primary" onclick="submitScore()">기록 저장</button>
+    <div id="infoError" class="error"></div>
+  </div>
+</section>
+
+<section id="leaderboard" class="screen hidden">
+  <div class="result-title">TOP RECORD</div>
+  <div id="myResult" class="result-time"></div>
+  <div class="small" id="saveState"></div>
+  <div class="leader"><h2>현재 최고기록</h2><div id="leaders">불러오는 중...</div></div>
+  <button class="primary" style="width:auto;padding:15px 28px" onclick="location.reload()">다시 도전</button>
+</section>
+
+<script>
+const TOTAL=30; let removed=0,startTime=0,timerId=null,currentNickname="",finalSeconds=0;
+const $=id=>document.getElementById(id);
+function go(id){["start","nickname","game","info","leaderboard"].forEach(x=>$(x).classList.toggle("hidden",x!==id));}
+function random(a,b){return Math.random()*(b-a)+a}
+function beginGame(){
+ currentNickname=$("nicknameInput").value.trim();
+ $("nickError").textContent=currentNickname?"":"닉네임을 입력해주세요.";
+ if(!currentNickname)return;
+ removed=0;$("count").textContent=0;$("timer").textContent="0.00";go("game");makeBoard();
+ startTime=performance.now();tick();
+}
+function tick(){let e=(performance.now()-startTime)/1000;$("timer").textContent=e.toFixed(2);timerId=requestAnimationFrame(tick)}
+function makeBoard(){
+ const b=$("board");b.innerHTML="";
+ for(let i=0;i<7;i++){let t=document.createElement("div");t.className="thread";t.style.top=(10+i*14)+"%";b.appendChild(t)}
+ const pos=[];
+ for(let i=0;i<TOTAL;i++){let x,y,ok=false;
+  for(let tries=0;tries<100&&!ok;tries++){x=random(4,96);y=random(5,94);ok=pos.every(p=>Math.hypot((x-p.x)*.9,y-p.y)>8)}
+  pos.push({x,y});let btn=document.createElement("button");btn.className="button";btn.setAttribute("aria-label","단추 뜯기");
+  btn.style.left=`calc(${x}% - 24px)`;btn.style.top=`calc(${y}% - 24px)`;
+  btn.addEventListener("pointerdown",()=>{if(btn.classList.contains("pulled"))return;btn.classList.add("pulled");removed++;$("count").textContent=removed;if(removed===TOTAL)finish()}, {passive:true});
+  b.appendChild(btn);
+ }
+}
+function finish(){
+ cancelAnimationFrame(timerId);finalSeconds=(performance.now()-startTime)/1000;
+ $("scoreSummary").innerHTML=`<strong>${escapeHtml(currentNickname)}</strong> 님의 기록 <strong>${finalSeconds.toFixed(2)}초</strong>`;
+ $("phone").value="";$("consent").checked=false;$("infoError").textContent="";go("info");
+}
+function formatPhone(v){v=v.replace(/\D/g,"").slice(0,11);if(v.length<4)return v;if(v.length<8)return v.slice(0,3)+"-"+v.slice(3);return v.slice(0,3)+"-"+v.slice(3,7)+"-"+v.slice(7)}
+$("phone").addEventListener("input",e=>e.target.value=formatPhone(e.target.value));
+async function submitScore(){
+ const phone=$("phone").value.trim(),consent=$("consent").checked;
+ $("infoError").textContent="";
+ if(!/^01[0-9]-\d{3,4}-\d{4}$/.test(phone)){ $("infoError").textContent="전화번호를 정확히 입력해주세요.";return}
+ if(!consent){$("infoError").textContent="개인정보 수집·이용에 동의해주세요.";return}
+ try{
+  const r=await fetch("/api/submit-score",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({nickname:currentNickname,phone,seconds:Number(finalSeconds.toFixed(2)),consent:true})});
+  const d=await r.json();if(!r.ok)throw new Error(d.error||"저장 실패");
+  $("myResult").textContent=finalSeconds.toFixed(2)+"s";$("saveState").textContent="기록이 저장되었습니다.";go("leaderboard");loadLeaders();
+ }catch(e){$("infoError").textContent=e.message}
+}
+async function loadLeaders(){
+ try{const r=await fetch("/api/scores");const d=await r.json();$("leaders").innerHTML=d.scores.length?d.scores.map((s,i)=>`<div class="row"><span>${i+1}. ${escapeHtml(s.nickname)}</span><strong>${Number(s.seconds).toFixed(2)}s</strong></div>`).join(""):"아직 기록이 없습니다."}
+ catch(e){$("leaders").textContent="기록을 불러오지 못했습니다."}
+}
+function escapeHtml(s){return s.replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+</script>
+</body>
+</html>

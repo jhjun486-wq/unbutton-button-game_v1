@@ -1,0 +1,18 @@
+[build]
+  publish = "."
+  functions = "netlify/functions"
+
+[[redirects]]
+  from = "/api/submit-score"
+  to = "/.netlify/functions/submit-score"
+  status = 200
+
+[[redirects]]
+  from = "/api/scores"
+  to = "/.netlify/functions/scores"
+  status = 200
+
+[[redirects]]
+  from = "/api/admin-scores"
+  to = "/.netlify/functions/admin-scores"
+  status = 200
