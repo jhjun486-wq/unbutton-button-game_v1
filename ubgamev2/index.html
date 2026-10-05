@@ -6,35 +6,235 @@
 <title>단추 게임</title>
 <style>
 *{box-sizing:border-box}
-html,body{margin:0;background:#111;color:#d94a52;font-family:Arial,"Noto Sans KR",sans-serif}
-button,input{font:inherit}
-body{min-height:100vh}
-.wrap{max-width:720px;margin:auto;padding:24px 18px}
-.screen{min-height:calc(100vh - 48px);display:none;flex-direction:column;justify-content:center}
-.screen.active{display:flex}
-.logo{font-weight:900;letter-spacing:.08em;font-size:14px;margin-bottom:22px;color:#fff}
-.title{font-size:clamp(40px,11vw,82px);line-height:1;font-weight:900;letter-spacing:-.07em;color:#d94a52;white-space:nowrap}
-.sub{font-size:16px;line-height:1.6;margin:26px 0 30px;font-weight:700;color:#fff}
-.btn{border:2px solid #fff;background:#fff;color:#111;padding:16px 20px;border-radius:999px;cursor:pointer;font-weight:900;transition:.15s}
-.btn:hover{transform:translateY(-2px)}
-.btn.alt{background:transparent;color:#fff}
-.input{width:100%;border:2px solid #fff;background:#fff;padding:16px;border-radius:12px;outline:none}
-.field{margin:12px 0}
-.label{font-size:13px;font-weight:800;margin-bottom:7px}
-.gamehead{display:flex;justify-content:space-between;font-weight:900;margin-bottom:12px}
-.arena{position:relative;height:62vh;min-height:420px;border:2px solid #fff;background:#fff;border-radius:18px;overflow:hidden}
-.dot{position:absolute;width:46px;height:46px;border:2px solid #111;background:#e60012;border-radius:50%;cursor:pointer;font-weight:900;padding:0}
-.dot:active{transform:scale(.9)}
-.center{text-align:center}
-.rank{display:flex;justify-content:space-between;border-bottom:2px solid #fff;padding:12px 0;font-weight:700}
-.small{font-size:12px;color:#555}
-.check{display:flex;gap:8px;align-items:flex-start;font-size:13px;line-height:1.45;margin:14px 0}
-.error{color:#fff;font-size:13px;min-height:20px;font-weight:700}
-.link{margin-top:18px;color:#fff;text-decoration:underline;cursor:pointer}
-.hidden{display:none}
+
+html,body{
+  margin:0;
+  background:#090909;
+  color:#f7f7f7;
+  font-family:"Courier New",monospace;
+  image-rendering:pixelated;
+}
+
+body{
+  min-height:100vh;
+}
+
+button,input{
+  font:inherit;
+}
+
+.wrap{
+  max-width:720px;
+  margin:auto;
+  padding:24px 18px;
+}
+
+.screen{
+  min-height:calc(100vh - 48px);
+  display:none;
+  flex-direction:column;
+  justify-content:center;
+}
+
+.screen.active{
+  display:flex;
+}
+
+.logo{
+  font-weight:900;
+  letter-spacing:.12em;
+  font-size:13px;
+  margin-bottom:22px;
+  color:#f7f7f7;
+  text-transform:uppercase;
+}
+
+.title{
+  font-size:clamp(42px,12vw,88px);
+  line-height:1;
+  font-weight:900;
+  letter-spacing:-.08em;
+  color:#ff4b55;
+  white-space:nowrap;
+  text-shadow:4px 4px 0 #4d1115;
+}
+
+.sub{
+  font-size:15px;
+  line-height:1.7;
+  margin:28px 0 30px;
+  font-weight:700;
+  color:#f7f7f7;
+}
+
+.btn{
+  border:3px solid #f7f7f7;
+  background:#f7f7f7;
+  color:#090909;
+  padding:15px 20px;
+  border-radius:0;
+  cursor:pointer;
+  font-weight:900;
+  box-shadow:5px 5px 0 #ff4b55;
+  transition:transform .08s,box-shadow .08s;
+}
+
+.btn:hover{
+  transform:translate(2px,2px);
+  box-shadow:3px 3px 0 #ff4b55;
+}
+
+.btn:active{
+  transform:translate(5px,5px);
+  box-shadow:none;
+}
+
+.btn.alt{
+  background:transparent;
+  color:#f7f7f7;
+}
+
+.input{
+  width:100%;
+  border:3px solid #f7f7f7;
+  background:#111;
+  color:#f7f7f7;
+  padding:15px;
+  border-radius:0;
+  outline:none;
+}
+
+.input:focus{
+  border-color:#ff4b55;
+  box-shadow:4px 4px 0 #ff4b55;
+}
+
+.field{
+  margin:12px 0;
+}
+
+.label{
+  font-size:13px;
+  font-weight:800;
+  margin-bottom:7px;
+}
+
+.gamehead{
+  display:flex;
+  justify-content:space-between;
+  font-weight:900;
+  margin-bottom:12px;
+  color:#ff4b55;
+  font-size:16px;
+}
+
+.arena{
+  position:relative;
+  height:62vh;
+  min-height:420px;
+  border:4px solid #f7f7f7;
+  background:#f7f7f7;
+  border-radius:0;
+  overflow:hidden;
+  box-shadow:8px 8px 0 #ff4b55;
+}
+
+.dot{
+  position:absolute;
+  width:44px;
+  height:44px;
+  border:3px solid #090909;
+  background:#ff4b55;
+  border-radius:0;
+  cursor:pointer;
+  font-weight:900;
+  padding:0;
+  box-shadow:4px 4px 0 #090909;
+  transition:transform .06s,box-shadow .06s;
+}
+
+.dot:active{
+  transform:translate(4px,4px);
+  box-shadow:none;
+}
+
+.center{
+  text-align:center;
+}
+
+.rank{
+  display:flex;
+  justify-content:space-between;
+  border-bottom:2px solid #f7f7f7;
+  padding:12px 0;
+  font-weight:700;
+}
+
+.small{
+  font-size:12px;
+  color:#aaa;
+}
+
+.check{
+  display:flex;
+  gap:8px;
+  align-items:flex-start;
+  font-size:13px;
+  line-height:1.45;
+  margin:14px 0;
+}
+
+.check input{
+  accent-color:#ff4b55;
+  width:16px;
+  height:16px;
+}
+
+.error{
+  color:#ff7b83;
+  font-size:13px;
+  min-height:20px;
+  font-weight:700;
+}
+
+.link{
+  margin-top:18px;
+  color:#f7f7f7;
+  text-decoration:underline;
+  cursor:pointer;
+}
+
+.hidden{
+  display:none;
+}
+
+h1,h2{
+  font-family:"Courier New",monospace;
+  letter-spacing:-.05em;
+}
+
+/* 8-bit 스캔라인 효과 */
+.screen.active::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background:repeating-linear-gradient(
+    0deg,
+    rgba(255,255,255,.018) 0px,
+    rgba(255,255,255,.018) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+}
 </style>
 </head>
+
 <body>
+
+<audio id="bgMusic" src="dreamy-bg.mp3" loop preload="auto"></audio>
+<audio id="buttonSfx" src="button-pop.mp3" preload="auto"></audio>
+
 <main class="wrap">
 
 <section id="start" class="screen active">
@@ -50,10 +250,13 @@ body{min-height:100vh}
 <section id="nickname" class="screen">
   <div class="logo">WHO ARE YOU?</div>
   <h2 style="color:#fff">닉네임을 입력해주세요.</h2>
+
   <div class="field">
     <input id="nicknameInput" class="input" maxlength="12" placeholder="최대 12자">
   </div>
+
   <div id="nickError" class="error"></div>
+
   <button class="btn" onclick="startGame()">게임 시작</button>
 </section>
 
@@ -62,103 +265,203 @@ body{min-height:100vh}
     <span id="playerLabel"></span>
     <span id="timer">0.00s</span>
   </div>
+
   <div id="arena" class="arena"></div>
 </section>
 
 <section id="info" class="screen">
   <div class="logo">RECORD SAVED</div>
+
   <h2 style="color:#fff">기록이 완성됐어요.</h2>
+
   <p class="sub">
     최고 기록에 등록하려면<br>
     이메일을 입력해주세요.
   </p>
+
   <div class="field">
     <div class="label">이메일</div>
-    <input id="email" class="input" type="email" inputmode="email" autocomplete="email" placeholder="이메일을 입력해주세요">
+
+    <input
+      id="email"
+      class="input"
+      type="email"
+      inputmode="email"
+      autocomplete="email"
+      placeholder="이메일을 입력해주세요"
+    >
   </div>
+
   <label class="check">
     <input id="consent" type="checkbox">
-    <span>개인정보 수집 및 이용에 동의합니다. 기록 확인 및 이벤트 안내를 위해 이메일을 수집합니다.</span>
+
+    <span>
+      개인정보 수집 및 이용에 동의합니다.
+      기록 확인 및 이벤트 안내를 위해 이메일을 수집합니다.
+    </span>
   </label>
+
   <div id="infoError" class="error"></div>
+
   <button class="btn" onclick="submitScore()">기록 등록</button>
-  <div class="link" onclick="showLeaderboard()">기록 등록 없이 랭킹 보기</div>
+
+  <div class="link" onclick="showLeaderboard()">
+    기록 등록 없이 랭킹 보기
+  </div>
 </section>
 
 <section id="leaderboard" class="screen">
+
   <div class="logo">HIGHEST RECORD</div>
+
   <h1 style="color:#fff">TOP 10</h1>
+
   <div id="board">불러오는 중...</div>
+
   <p id="boardError" class="error"></p>
-  <button class="btn" onclick="go('start')">다시 하기</button>
+
+  <button class="btn" onclick="go('start')">
+    다시 하기
+  </button>
+
 </section>
 
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-const SUPABASE_URL='https://odocufrmybizooxecphn.supabase.co';
-const SUPABASE_ANON_KEY='sb_publishable_XZGCRCDVWLB-96_NpZQ3sw_3aiD-YhI';
-const sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
 
-let nickname='',started=0,timerId=null,count=0,record=0;
+<script>
+
+const SUPABASE_URL='https://odocufrmybizooxecphn.supabase.co';
+
+const SUPABASE_ANON_KEY='sb_publishable_XZGCRCDVWLB-96_NpZQ3sw_3aiD-YhI';
+
+const sb=supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY
+);
+
+let nickname='';
+let started=0;
+let timerId=null;
+let count=0;
+let record=0;
 
 const $=id=>document.getElementById(id);
 
+
 function go(id){
-  document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));
+
+  document
+    .querySelectorAll('.screen')
+    .forEach(x=>x.classList.remove('active'));
+
   $(id).classList.add('active');
 }
 
+
 function startGame(){
+
   nickname=$('nicknameInput').value.trim();
 
   if(!nickname){
+
     $('nickError').textContent='닉네임을 입력해주세요.';
+
     return;
   }
 
   $('nickError').textContent='';
+
   $('playerLabel').textContent=nickname;
+
+  const bg=$('bgMusic');
+
+  bg.volume=0.38;
+
+  bg.currentTime=0;
+
+  bg.play().catch(err=>{
+    console.log('배경음 재생 실패:',err);
+  });
+
   go('game');
+
   buildGame();
 }
 
+
 function buildGame(){
+
   const a=$('arena');
 
   a.innerHTML='';
+
   count=0;
+
   started=performance.now();
+
   $('timer').textContent='0.00s';
 
+
   for(let i=0;i<30;i++){
+
     const b=document.createElement('button');
 
     b.className='dot';
+
+    b.setAttribute('aria-label','단추');
+
     b.textContent='';
+
     b.style.left=(Math.random()*88+4)+'%';
+
     b.style.top=(Math.random()*88+4)+'%';
 
+
     b.onclick=()=>{
+
+      const sfx=$('buttonSfx');
+
+      sfx.currentTime=0;
+
+      sfx.volume=0.65;
+
+      sfx.play().catch(err=>{
+        console.log('효과음 재생 실패:',err);
+      });
+
       b.remove();
+
       count++;
 
-      if(count===30) finish();
+      if(count===30){
+
+        finish();
+
+      }
+
     };
 
     a.appendChild(b);
+
   }
+
 
   clearInterval(timerId);
 
   timerId=setInterval(()=>{
+
     $('timer').textContent=
       ((performance.now()-started)/1000).toFixed(2)+'s';
+
   },20);
+
 }
 
+
 function finish(){
+
   clearInterval(timerId);
 
   record=Number(
@@ -167,44 +470,75 @@ function finish(){
 
   $('timer').textContent=record.toFixed(2)+'s';
 
+  $('bgMusic').pause();
+
   setTimeout(()=>go('info'),300);
+
 }
 
+
 async function submitScore(){
+
+  $('bgMusic').pause();
+
   const email=$('email').value.trim();
+
   $('infoError').textContent='';
 
+
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+
     $('infoError').textContent='이메일을 정확히 입력해주세요.';
+
     return;
   }
 
+
   if(!$('consent').checked){
-    $('infoError').textContent='개인정보 수집 및 이용에 동의해주세요.';
+
+    $('infoError').textContent=
+      '개인정보 수집 및 이용에 동의해주세요.';
+
     return;
   }
+
 
   $('infoError').textContent='등록 중...';
 
-  const {error}=await sb.from('scores').insert({
-    nickname,
-    email,
-    seconds:record,
-    consent_at:new Date().toISOString()
-  });
+
+  const {error}=await sb
+    .from('scores')
+    .insert({
+      nickname,
+      email,
+      seconds:record,
+      consent_at:new Date().toISOString()
+    });
+
 
   if(error){
-    $('infoError').textContent='등록에 실패했습니다. 잠시 후 다시 시도해주세요.';
+
+    $('infoError').textContent=
+      '등록에 실패했습니다. 잠시 후 다시 시도해주세요.';
+
     console.error(error);
+
     return;
   }
 
   showLeaderboard();
+
 }
 
+
 async function showLeaderboard(){
+
+  $('bgMusic').pause();
+
   go('leaderboard');
+
   $('board').innerHTML='불러오는 중...';
+
 
   const {data,error}=await sb
     .from('leaderboard')
@@ -212,37 +546,66 @@ async function showLeaderboard(){
     .order('seconds',{ascending:true})
     .limit(10);
 
+
   if(error){
+
     $('board').innerHTML='';
-    $('boardError').textContent='랭킹을 불러오지 못했습니다.';
+
+    $('boardError').textContent=
+      '랭킹을 불러오지 못했습니다.';
+
     console.error(error);
+
     return;
   }
+
 
   $('boardError').textContent='';
 
+
   if(!data || data.length===0){
-    $('board').innerHTML='아직 등록된 기록이 없습니다.';
+
+    $('board').innerHTML=
+      '아직 등록된 기록이 없습니다.';
+
     return;
   }
 
+
   $('board').innerHTML=data.map((r,i)=>`
+
     <div class="rank">
-      <span>${i+1}. ${escapeHtml(r.nickname)}</span>
-      <b>${Number(r.seconds).toFixed(2)}s</b>
+
+      <span>
+        ${i+1}. ${escapeHtml(r.nickname)}
+      </span>
+
+      <b>
+        ${Number(r.seconds).toFixed(2)}s
+      </b>
+
     </div>
+
   `).join('');
+
 }
 
+
 function escapeHtml(s){
+
   return s.replace(/[&<>'"]/g,c=>({
+
     '&':'&amp;',
     '<':'&lt;',
     '>':'&gt;',
     "'":'&#39;',
     '"':'&quot;'
+
   }[c]));
+
 }
+
 </script>
+
 </body>
 </html>
