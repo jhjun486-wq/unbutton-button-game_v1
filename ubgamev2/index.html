@@ -1,251 +1,711 @@
 <!doctype html>
 <html lang="ko">
+
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+
 <title>풀어라! 단추</title>
 
+<!-- 픽셀 한글 폰트 : Galmuri11 -->
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/galmuri/dist/galmuri.css"
+>
+
 <style>
+
 *{
   box-sizing:border-box;
 }
 
-html,body{
+html,
+body{
   margin:0;
-  background:#090909;
-  color:#f7f7f7;
-  font-family:"Courier New",monospace;
+  padding:0;
+
+  width:100%;
+  min-height:100%;
+
+  background:#000;
+  color:#f4f4f4;
+
+  font-family:
+    "Galmuri11",
+    monospace;
+
   image-rendering:pixelated;
+  -webkit-font-smoothing:none;
 }
 
 body{
   min-height:100vh;
+  overflow-x:hidden;
 }
 
-button,input{
-  font:inherit;
+button,
+input{
+  font-family:
+    "Galmuri11",
+    monospace;
+
+  font-weight:700;
+  -webkit-font-smoothing:none;
+}
+
+button{
+  image-rendering:pixelated;
 }
 
 .wrap{
-  max-width:720px;
-  margin:auto;
-  padding:24px 18px;
+  width:100%;
+  max-width:760px;
+
+  margin:0 auto;
+
+  padding:
+    28px
+    20px
+    40px;
 }
 
 .screen{
-  min-height:calc(100vh - 48px);
+  min-height:
+    calc(100vh - 68px);
+
   display:none;
+
   flex-direction:column;
   justify-content:center;
+
+  position:relative;
 }
 
 .screen.active{
   display:flex;
 }
 
+
+/* =========================================
+   전체 픽셀 스캔라인
+========================================= */
+
+.screen.active::before{
+  content:"";
+
+  position:fixed;
+  inset:0;
+
+  pointer-events:none;
+
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(255,255,255,.025) 0px,
+      rgba(255,255,255,.025) 1px,
+      transparent 1px,
+      transparent 4px
+    );
+
+  z-index:999;
+}
+
+
+/* =========================================
+   상단 로고
+========================================= */
+
 .logo{
-  font-weight:900;
-  letter-spacing:.12em;
-  font-size:13px;
   margin-bottom:22px;
-  color:#f7f7f7;
+
+  color:#f4f4f4;
+
+  font-family:
+    "Galmuri11",
+    monospace;
+
+  font-size:15px;
+  font-weight:700;
+
+  letter-spacing:.08em;
+
   text-transform:uppercase;
 }
 
-/* 메인 타이틀 */
+
+/* =========================================
+   메인 제목
+========================================= */
+
 .title{
-  font-size:clamp(56px,15vw,110px);
-  line-height:1;
+  margin:0;
+
+  color:#ff1018;
+
+  font-family:
+    "Galmuri11",
+    monospace;
+
+  font-size:
+    clamp(
+      58px,
+      16vw,
+      128px
+    );
+
+  line-height:.88;
+
   font-weight:900;
-  letter-spacing:-.08em;
-  color:#d40018;
+
+  letter-spacing:-.09em;
+
   white-space:nowrap;
-  text-shadow:5px 5px 0 #5c000b;
+
+  text-align:left;
+
+  text-shadow:
+    5px 0 0 #000,
+    -3px 0 0 #000,
+    0 4px 0 #000,
+    7px 7px 0 #f4f4f4;
 }
+
+
+/* =========================================
+   설명
+========================================= */
 
 .sub{
-  font-size:15px;
+  margin:
+    35px
+    0
+    30px;
+
+  color:#f4f4f4;
+
+  font-size:16px;
+
   line-height:1.7;
-  margin:28px 0 30px;
+
   font-weight:700;
-  color:#f7f7f7;
 }
 
+
+/* =========================================
+   일반 버튼
+========================================= */
+
 .btn{
-  border:3px solid #f7f7f7;
-  background:#f7f7f7;
-  color:#090909;
-  padding:15px 20px;
+  appearance:none;
+  -webkit-appearance:none;
+
+  width:100%;
+
+  border:
+    4px
+    solid
+    #f4f4f4;
+
   border-radius:0;
+
+  background:#ff1018;
+  color:#fff;
+
+  padding:
+    17px
+    22px;
+
   cursor:pointer;
+
+  font-family:
+    "Galmuri11",
+    monospace;
+
+  font-size:20px;
+
   font-weight:900;
-  box-shadow:5px 5px 0 #d40018;
-  transition:transform .08s,box-shadow .08s;
+
+  letter-spacing:.02em;
+
+  box-shadow:
+    6px 6px 0 #f4f4f4;
+
+  transition:none;
 }
 
 .btn:hover{
-  transform:translate(2px,2px);
-  box-shadow:3px 3px 0 #d40018;
+  background:#f4f4f4;
+  color:#ff1018;
+
+  box-shadow:
+    6px 6px 0 #ff1018;
 }
 
 .btn:active{
-  transform:translate(5px,5px);
+  transform:
+    translate(
+      5px,
+      5px
+    );
+
   box-shadow:none;
 }
 
 .btn.alt{
-  background:transparent;
-  color:#f7f7f7;
+  background:#000;
+  color:#f4f4f4;
 }
 
-.input{
-  width:100%;
-  border:3px solid #f7f7f7;
-  background:#111;
-  color:#f7f7f7;
-  padding:15px;
-  border-radius:0;
-  outline:none;
-}
 
-.input:focus{
-  border-color:#d40018;
-  box-shadow:4px 4px 0 #d40018;
-}
+/* =========================================
+   입력창
+========================================= */
 
 .field{
-  margin:12px 0;
+  margin:
+    14px
+    0;
 }
 
 .label{
-  font-size:13px;
-  font-weight:800;
-  margin-bottom:7px;
+  margin-bottom:8px;
+
+  color:#f4f4f4;
+
+  font-size:15px;
+
+  font-weight:900;
 }
+
+.input{
+  appearance:none;
+  -webkit-appearance:none;
+
+  width:100%;
+  height:60px;
+
+  border:
+    4px
+    solid
+    #f4f4f4;
+
+  border-radius:0;
+
+  background:#000;
+  color:#f4f4f4;
+
+  padding:
+    12px
+    16px;
+
+  outline:none;
+
+  font-family:
+    "Galmuri11",
+    monospace;
+
+  font-size:19px;
+
+  font-weight:700;
+}
+
+.input::placeholder{
+  color:#666;
+}
+
+.input:focus{
+  border-color:#ff1018;
+
+  box-shadow:
+    6px 6px 0 #ff1018;
+}
+
+
+/* =========================================
+   닉네임 화면
+========================================= */
+
+h1,
+h2{
+  margin-top:0;
+
+  font-family:
+    "Galmuri11",
+    monospace;
+
+  font-weight:900;
+
+  letter-spacing:-.04em;
+}
+
+h2{
+  font-size:32px;
+
+  line-height:1.25;
+
+  color:#f4f4f4 !important;
+}
+
+
+/* =========================================
+   게임 상단
+========================================= */
 
 .gamehead{
   display:flex;
+
   justify-content:space-between;
+  align-items:center;
+
+  margin-bottom:18px;
+
+  padding:
+    10px
+    0;
+
+  color:#ff1018;
+
+  font-family:
+    "Galmuri11",
+    monospace;
+
+  font-size:19px;
+
   font-weight:900;
-  margin-bottom:12px;
-  color:#d40018;
-  font-size:16px;
+
+  border-top:
+    3px
+    solid
+    #f4f4f4;
+
+  border-bottom:
+    3px
+    solid
+    #f4f4f4;
 }
+
+
+/* =========================================
+   게임 영역
+========================================= */
 
 .arena{
   position:relative;
+
+  width:100%;
+
   height:62vh;
+
   min-height:420px;
-  border:4px solid #f7f7f7;
-  background:#f7f7f7;
-  border-radius:0;
+
+  background:#f4f4f4;
+
+  border:
+    5px
+    solid
+    #f4f4f4;
+
   overflow:hidden;
-  box-shadow:8px 8px 0 #d40018;
+
+  box-shadow:
+    9px 9px 0 #ff1018;
 }
 
-/* 단추 */
+
+/* =========================================
+   단추
+========================================= */
+
 .dot{
   appearance:none;
   -webkit-appearance:none;
 
   position:absolute;
-  width:44px;
-  height:44px;
 
-  border:3px solid #090909;
-  background:#d40018;
+  width:46px;
+  height:46px;
+
+  padding:0;
+
+  border:
+    4px
+    solid
+    #000;
 
   border-radius:50%;
 
+  background:#ff1018;
+
   cursor:pointer;
-  font-weight:900;
-  padding:0;
 
-  box-shadow:4px 4px 0 #090909;
+  box-shadow:
+    4px 4px 0 #000;
 
-  transition:transform .06s,box-shadow .06s;
+  transition:none;
+
+  font-family:
+    "Galmuri11",
+    monospace;
+
+  image-rendering:pixelated;
+}
+
+.dot:hover{
+  background:#000;
+
+  border-color:#ff1018;
+
+  box-shadow:
+    4px 4px 0 #ff1018;
 }
 
 .dot:active{
-  transform:translate(4px,4px);
+  transform:
+    translate(
+      4px,
+      4px
+    );
+
   box-shadow:none;
 }
+
+
+/* =========================================
+   중앙 정렬
+========================================= */
 
 .center{
   text-align:center;
 }
 
+
+/* =========================================
+   랭킹
+========================================= */
+
 .rank{
   display:flex;
+
   justify-content:space-between;
-  border-bottom:2px solid #f7f7f7;
-  padding:12px 0;
+  align-items:center;
+
+  padding:
+    15px
+    10px;
+
+  border-bottom:
+    3px
+    solid
+    #f4f4f4;
+
+  color:#f4f4f4;
+
+  font-size:17px;
+
   font-weight:700;
 }
 
-.small{
-  font-size:12px;
-  color:#aaa;
+.rank:first-child{
+  color:#ff1018;
+
+  font-size:19px;
 }
+
+.rank b{
+  font-weight:900;
+}
+
+
+/* =========================================
+   작은 글씨
+========================================= */
+
+.small{
+  font-size:13px;
+
+  color:#888;
+}
+
+
+/* =========================================
+   개인정보 동의
+========================================= */
 
 .check{
   display:flex;
-  gap:8px;
+
+  gap:10px;
+
   align-items:flex-start;
-  font-size:13px;
-  line-height:1.45;
-  margin:14px 0;
-}
 
-.check input{
-  accent-color:#d40018;
-  width:16px;
-  height:16px;
-}
+  margin:
+    16px
+    0;
 
-.error{
-  color:#ff7b83;
+  color:#f4f4f4;
+
   font-size:13px;
-  min-height:20px;
+
+  line-height:1.6;
+
   font-weight:700;
 }
 
+.check input{
+  flex:
+    0
+    0
+    auto;
+
+  width:18px;
+  height:18px;
+
+  margin-top:2px;
+
+  accent-color:#ff1018;
+}
+
+
+/* =========================================
+   에러
+========================================= */
+
+.error{
+  min-height:22px;
+
+  margin:
+    6px
+    0
+    12px;
+
+  color:#ff1018;
+
+  font-size:14px;
+
+  line-height:1.5;
+
+  font-weight:900;
+}
+
+
+/* =========================================
+   링크
+========================================= */
+
 .link{
-  margin-top:18px;
-  color:#f7f7f7;
+  margin-top:22px;
+
+  color:#f4f4f4;
+
+  font-size:14px;
+
+  font-weight:700;
+
   text-decoration:underline;
+
   cursor:pointer;
 }
+
+.link:hover{
+  color:#ff1018;
+}
+
+
+/* =========================================
+   숨김
+========================================= */
 
 .hidden{
   display:none;
 }
 
-h1,h2{
-  font-family:"Courier New",monospace;
-  letter-spacing:-.05em;
+
+/* =========================================
+   모바일
+========================================= */
+
+@media(max-width:520px){
+
+  .wrap{
+    padding:
+      22px
+      16px
+      32px;
+  }
+
+  .title{
+    font-size:
+      clamp(
+        52px,
+        17vw,
+        90px
+      );
+
+    text-shadow:
+      4px 0 0 #000,
+      -2px 0 0 #000,
+      0 3px 0 #000,
+      5px 5px 0 #f4f4f4;
+  }
+
+  .sub{
+    font-size:14px;
+  }
+
+  h2{
+    font-size:27px;
+  }
+
+  .arena{
+    height:
+      calc(
+        100vh
+        - 170px
+      );
+
+    min-height:420px;
+  }
+
+  .dot{
+    width:42px;
+    height:42px;
+  }
+
 }
 
-/* 8-bit 스캔라인 효과 */
-.screen.active::before{
-  content:"";
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-  background:repeating-linear-gradient(
-    0deg,
-    rgba(255,255,255,.018) 0px,
-    rgba(255,255,255,.018) 1px,
-    transparent 1px,
-    transparent 4px
-  );
+
+/* =========================================
+   아주 작은 화면
+========================================= */
+
+@media(max-width:360px){
+
+  .title{
+    font-size:50px;
+  }
+
+  .arena{
+    min-height:380px;
+  }
+
+  .dot{
+    width:38px;
+    height:38px;
+  }
+
 }
+
 </style>
 </head>
 
+
 <body>
 
-<!-- 배경음 -->
+
+<!-- =====================================
+     배경음
+===================================== -->
+
 <audio
   id="bgMusic"
   src="dreamy-bg.mp3"
@@ -253,7 +713,11 @@ h1,h2{
   preload="auto">
 </audio>
 
-<!-- 단추 효과음 -->
+
+<!-- =====================================
+     단추 효과음
+===================================== -->
+
 <audio
   id="buttonSfx"
   src="button-pop.mp3"
@@ -261,41 +725,65 @@ h1,h2{
 </audio>
 
 
+
 <main class="wrap">
 
-<section id="start" class="screen active">
+
+<!-- =====================================
+     START
+===================================== -->
+
+<section
+  id="start"
+  class="screen active"
+>
 
   <div class="logo">
     UNBUTTON 2027
   </div>
 
+
+  <!-- 게임 제목은 그대로 유지 -->
   <div class="title">
-    단추 게임
+    풀어라! 단추
   </div>
+
 
   <p class="sub">
     30개의 단추를 최대한 빠르게 풀어주세요.<br>
     최고 기록에 도전하세요!
   </p>
 
+
   <button
     class="btn"
-    onclick="go('nickname')">
+    onclick="go('nickname')"
+  >
     START
   </button>
 
 </section>
 
 
-<section id="nickname" class="screen">
+
+<!-- =====================================
+     NICKNAME
+===================================== -->
+
+<section
+  id="nickname"
+  class="screen"
+>
 
   <div class="logo">
     WHO ARE YOU?
   </div>
 
-  <h2 style="color:#fff">
+
+  <h2>
     닉네임을 입력해주세요.
   </h2>
+
 
   <div class="field">
 
@@ -303,22 +791,37 @@ h1,h2{
       id="nicknameInput"
       class="input"
       maxlength="12"
-      placeholder="최대 12자">
+      placeholder="최대 12자"
+    >
 
   </div>
 
-  <div id="nickError" class="error"></div>
+
+  <div
+    id="nickError"
+    class="error"
+  ></div>
+
 
   <button
     class="btn"
-    onclick="startGame()">
+    onclick="startGame()"
+  >
     게임 시작
   </button>
 
 </section>
 
 
-<section id="game" class="screen">
+
+<!-- =====================================
+     GAME
+===================================== -->
+
+<section
+  id="game"
+  class="screen"
+>
 
   <div class="gamehead">
 
@@ -330,28 +833,40 @@ h1,h2{
 
   </div>
 
+
   <div
     id="arena"
-    class="arena">
-  </div>
+    class="arena"
+  ></div>
 
 </section>
 
 
-<section id="info" class="screen">
+
+<!-- =====================================
+     INFO
+===================================== -->
+
+<section
+  id="info"
+  class="screen"
+>
 
   <div class="logo">
     RECORD SAVED
   </div>
 
-  <h2 style="color:#fff">
+
+  <h2>
     기록이 완성됐어요.
   </h2>
+
 
   <p class="sub">
     최고 기록에 등록하려면<br>
     이메일을 입력해주세요.
   </p>
+
 
   <div class="field">
 
@@ -359,21 +874,26 @@ h1,h2{
       이메일
     </div>
 
+
     <input
       id="email"
       class="input"
       type="email"
       inputmode="email"
       autocomplete="email"
-      placeholder="이메일을 입력해주세요">
+      placeholder="이메일을 입력해주세요"
+    >
 
   </div>
+
 
   <label class="check">
 
     <input
       id="consent"
-      type="checkbox">
+      type="checkbox"
+    >
+
 
     <span>
       개인정보 수집 및 이용에 동의합니다.
@@ -382,66 +902,97 @@ h1,h2{
 
   </label>
 
+
   <div
     id="infoError"
-    class="error">
-  </div>
+    class="error"
+  ></div>
+
 
   <button
     class="btn"
-    onclick="submitScore()">
+    onclick="submitScore()"
+  >
     기록 등록
   </button>
 
+
   <div
     class="link"
-    onclick="showLeaderboard()">
+    onclick="showLeaderboard()"
+  >
     기록 등록 없이 랭킹 보기
   </div>
 
 </section>
 
 
-<section id="leaderboard" class="screen">
+
+<!-- =====================================
+     LEADERBOARD
+===================================== -->
+
+<section
+  id="leaderboard"
+  class="screen"
+>
 
   <div class="logo">
     HIGHEST RECORD
   </div>
 
-  <h1 style="color:#fff">
+
+  <h1>
     TOP 10
   </h1>
+
 
   <div id="board">
     불러오는 중...
   </div>
 
+
   <p
     id="boardError"
-    class="error">
-  </p>
+    class="error"
+  ></p>
+
 
   <button
     class="btn"
-    onclick="go('start')">
+    onclick="go('start')"
+  >
     다시 하기
   </button>
 
 </section>
 
+
 </main>
 
 
-<!-- Supabase -->
+
+<!-- =====================================
+     SUPABASE
+===================================== -->
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+
 <script>
+
+
+/* =====================================
+   SUPABASE 설정
+===================================== */
 
 const SUPABASE_URL =
   'https://odocufrmybizooxecphn.supabase.co';
 
+
 const SUPABASE_ANON_KEY =
   'sb_publishable_XZGCRCDVWLB-96_NpZQ3sw_3aiD-YhI';
+
 
 const sb =
   supabase.createClient(
@@ -450,16 +1001,35 @@ const sb =
   );
 
 
+
+/* =====================================
+   게임 변수
+===================================== */
+
 let nickname = '';
+
 let started = 0;
+
 let timerId = null;
+
 let count = 0;
+
 let record = 0;
 
+
+
+/* =====================================
+   간단한 ID 함수
+===================================== */
 
 const $ = id =>
   document.getElementById(id);
 
+
+
+/* =====================================
+   화면 이동
+===================================== */
 
 function go(id){
 
@@ -469,14 +1039,23 @@ function go(id){
       x.classList.remove('active')
     );
 
+
   $(id).classList.add('active');
+
 }
 
+
+
+/* =====================================
+   게임 시작
+===================================== */
 
 function startGame(){
 
   nickname =
-    $('nicknameInput').value.trim();
+    $('nicknameInput')
+      .value
+      .trim();
 
 
   if(!nickname){
@@ -485,38 +1064,65 @@ function startGame(){
       '닉네임을 입력해주세요.';
 
     return;
+
   }
 
 
   $('nickError').textContent = '';
 
+
   $('playerLabel').textContent =
     nickname;
 
 
-  /* 배경음 시작 */
+
+  /* -------------------------------
+     BGM
+     게임 시작 버튼을 누르는 순간
+     반드시 처음부터 재생
+  -------------------------------- */
+
   const bg =
     $('bgMusic');
 
+
   bg.volume = 0.38;
+
+
+  /* 항상 0초부터 시작 */
 
   bg.currentTime = 0;
 
-  bg.play().catch(err => {
 
-    console.log(
-      '배경음 재생 실패:',
-      err
-    );
+  /* loop 상태 유지 */
 
-  });
+  bg.loop = true;
+
+
+  bg.play()
+    .catch(err => {
+
+      console.log(
+        '배경음 재생 실패:',
+        err
+      );
+
+    });
+
 
 
   go('game');
 
+
   buildGame();
+
 }
 
+
+
+/* =====================================
+   게임 생성
+===================================== */
 
 function buildGame(){
 
@@ -526,7 +1132,9 @@ function buildGame(){
 
   a.innerHTML = '';
 
+
   count = 0;
+
 
   started =
     performance.now();
@@ -536,7 +1144,16 @@ function buildGame(){
     '0.00s';
 
 
-  for(let i = 0; i < 30; i++){
+
+  /* --------------------------------
+     단추 30개 생성
+  -------------------------------- */
+
+  for(
+    let i = 0;
+    i < 30;
+    i++
+  ){
 
     const b =
       document.createElement('button');
@@ -555,42 +1172,66 @@ function buildGame(){
     b.textContent = '';
 
 
+
+    /* --------------------------------
+       랜덤 위치
+    -------------------------------- */
+
     b.style.left =
-      (Math.random() * 88 + 4) + '%';
+      (
+        Math.random() * 88 + 4
+      ) + '%';
 
 
     b.style.top =
-      (Math.random() * 88 + 4) + '%';
+      (
+        Math.random() * 88 + 4
+      ) + '%';
 
+
+
+    /* --------------------------------
+       단추 클릭
+    -------------------------------- */
 
     b.onclick = () => {
 
-      /* 단추 효과음 */
+
       const sfx =
         $('buttonSfx');
 
 
+      /* 효과음은 누를 때마다
+         처음부터 재생 */
+
       sfx.currentTime = 0;
+
 
       sfx.volume = 0.65;
 
 
-      sfx.play().catch(err => {
+      sfx.play()
+        .catch(err => {
 
-        console.log(
-          '효과음 재생 실패:',
-          err
-        );
+          console.log(
+            '효과음 재생 실패:',
+            err
+          );
 
-      });
+        });
+
 
 
       b.remove();
 
+
       count++;
 
 
-      if(count === 30){
+
+      if(
+        count === 30
+      ){
 
         finish();
 
@@ -604,22 +1245,40 @@ function buildGame(){
   }
 
 
+
+  /* 기존 타이머 제거 */
+
   clearInterval(timerId);
 
+
+
+  /* --------------------------------
+     타이머 시작
+  -------------------------------- */
 
   timerId =
     setInterval(() => {
 
       $('timer').textContent =
         (
-          (performance.now() - started)
+          (
+            performance.now()
+            - started
+          )
           / 1000
-        ).toFixed(2) + 's';
+        )
+        .toFixed(2)
+        + 's';
 
     },20);
 
 }
 
+
+
+/* =====================================
+   게임 종료
+===================================== */
 
 function finish(){
 
@@ -629,38 +1288,59 @@ function finish(){
   record =
     Number(
       (
-        (performance.now() - started)
+        (
+          performance.now()
+          - started
+        )
         / 1000
-      ).toFixed(2)
+      )
+      .toFixed(2)
     );
 
 
   $('timer').textContent =
-    record.toFixed(2) + 's';
+    record.toFixed(2)
+    + 's';
 
 
-  $('bgMusic').pause();
+  /*
+    중요:
+    여기서 BGM을 pause하지 않음.
+
+    게임이 끝나도 현재 재생 중인
+    BGM은 그대로 이어서 재생됨.
+  */
 
 
-  setTimeout(
-    () => go('info'),
+  setTimeout(() =>
+    go('info'),
     300
   );
 
 }
 
 
-async function submitScore(){
 
-  $('bgMusic').pause();
+/* =====================================
+   기록 등록
+===================================== */
+
+async function submitScore(){
 
 
   const email =
-    $('email').value.trim();
+    $('email')
+      .value
+      .trim();
 
 
   $('infoError').textContent = '';
 
+
+
+  /* --------------------------------
+     이메일 검사
+  -------------------------------- */
 
   if(
     !/^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -671,21 +1351,36 @@ async function submitScore(){
       '이메일을 정확히 입력해주세요.';
 
     return;
+
   }
 
 
-  if(!$('consent').checked){
+
+  /* --------------------------------
+     개인정보 동의
+  -------------------------------- */
+
+  if(
+    !$('consent').checked
+  ){
 
     $('infoError').textContent =
       '개인정보 수집 및 이용에 동의해주세요.';
 
     return;
+
   }
+
 
 
   $('infoError').textContent =
     '등록 중...';
 
+
+
+  /* --------------------------------
+     Supabase 저장
+  -------------------------------- */
 
   const {error} =
     await sb
@@ -693,12 +1388,18 @@ async function submitScore(){
       .insert({
 
         nickname,
+
         email,
-        seconds:record,
+
+        seconds:
+          record,
+
         consent_at:
-          new Date().toISOString()
+          new Date()
+            .toISOString()
 
       });
+
 
 
   if(error){
@@ -709,7 +1410,9 @@ async function submitScore(){
     console.error(error);
 
     return;
+
   }
+
 
 
   showLeaderboard();
@@ -717,9 +1420,12 @@ async function submitScore(){
 }
 
 
-async function showLeaderboard(){
 
-  $('bgMusic').pause();
+/* =====================================
+   랭킹
+===================================== */
+
+async function showLeaderboard(){
 
 
   go('leaderboard');
@@ -729,7 +1435,11 @@ async function showLeaderboard(){
     '불러오는 중...';
 
 
-  const {data,error} =
+
+  const {
+    data,
+    error
+  } =
     await sb
       .from('leaderboard')
       .select(
@@ -737,14 +1447,18 @@ async function showLeaderboard(){
       )
       .order(
         'seconds',
-        {ascending:true}
+        {
+          ascending:true
+        }
       )
       .limit(10);
 
 
+
   if(error){
 
-    $('board').innerHTML = '';
+    $('board').innerHTML =
+      '';
 
     $('boardError').textContent =
       '랭킹을 불러오지 못했습니다.';
@@ -752,10 +1466,14 @@ async function showLeaderboard(){
     console.error(error);
 
     return;
+
   }
 
 
-  $('boardError').textContent = '';
+
+  $('boardError').textContent =
+    '';
+
 
 
   if(
@@ -767,46 +1485,64 @@ async function showLeaderboard(){
       '아직 등록된 기록이 없습니다.';
 
     return;
+
   }
 
 
+
   $('board').innerHTML =
-    data.map((r,i) => `
+    data
+      .map(
+        (r,i) => `
 
-      <div class="rank">
+          <div class="rank">
 
-        <span>
-          ${i+1}.
-          ${escapeHtml(r.nickname)}
-        </span>
+            <span>
+              ${i + 1}.
+              ${escapeHtml(r.nickname)}
+            </span>
 
-        <b>
-          ${Number(r.seconds).toFixed(2)}s
-        </b>
+            <b>
+              ${Number(r.seconds).toFixed(2)}s
+            </b>
 
-      </div>
+          </div>
 
-    `).join('');
+        `
+      )
+      .join('');
 
 }
 
+
+
+/* =====================================
+   HTML 이스케이프
+===================================== */
 
 function escapeHtml(s){
 
   return s.replace(
     /[&<>'"]/g,
+
     c => ({
 
       '&':'&amp;',
+
       '<':'&lt;',
+
       '>':'&gt;',
+
       "'":'&#39;',
+
       '"':'&quot;'
 
     }[c])
+
   );
 
 }
+
 
 </script>
 
