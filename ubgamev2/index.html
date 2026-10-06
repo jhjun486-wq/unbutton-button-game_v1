@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>단추 게임</title>
+<title>풀어라! 단추</title>
 
 <style>
 *{
@@ -52,14 +52,15 @@ button,input{
   text-transform:uppercase;
 }
 
+/* 메인 타이틀 */
 .title{
-  font-size:clamp(42px,12vw,88px);
+  font-size:clamp(56px,15vw,110px);
   line-height:1;
   font-weight:900;
   letter-spacing:-.08em;
-  color:#ff4b55;
+  color:#d40018;
   white-space:nowrap;
-  text-shadow:4px 4px 0 #4d1115;
+  text-shadow:5px 5px 0 #5c000b;
 }
 
 .sub{
@@ -78,13 +79,13 @@ button,input{
   border-radius:0;
   cursor:pointer;
   font-weight:900;
-  box-shadow:5px 5px 0 #ff4b55;
+  box-shadow:5px 5px 0 #d40018;
   transition:transform .08s,box-shadow .08s;
 }
 
 .btn:hover{
   transform:translate(2px,2px);
-  box-shadow:3px 3px 0 #ff4b55;
+  box-shadow:3px 3px 0 #d40018;
 }
 
 .btn:active{
@@ -108,8 +109,8 @@ button,input{
 }
 
 .input:focus{
-  border-color:#ff4b55;
-  box-shadow:4px 4px 0 #ff4b55;
+  border-color:#d40018;
+  box-shadow:4px 4px 0 #d40018;
 }
 
 .field{
@@ -127,7 +128,7 @@ button,input{
   justify-content:space-between;
   font-weight:900;
   margin-bottom:12px;
-  color:#ff4b55;
+  color:#d40018;
   font-size:16px;
 }
 
@@ -139,21 +140,29 @@ button,input{
   background:#f7f7f7;
   border-radius:0;
   overflow:hidden;
-  box-shadow:8px 8px 0 #ff4b55;
+  box-shadow:8px 8px 0 #d40018;
 }
 
 /* 단추 */
 .dot{
+  appearance:none;
+  -webkit-appearance:none;
+
   position:absolute;
   width:44px;
   height:44px;
+
   border:3px solid #090909;
-  background:#ff4b55;
+  background:#d40018;
+
   border-radius:50%;
+
   cursor:pointer;
   font-weight:900;
   padding:0;
+
   box-shadow:4px 4px 0 #090909;
+
   transition:transform .06s,box-shadow .06s;
 }
 
@@ -189,7 +198,7 @@ button,input{
 }
 
 .check input{
-  accent-color:#ff4b55;
+  accent-color:#d40018;
   width:16px;
   height:16px;
 }
@@ -236,17 +245,18 @@ h1,h2{
 
 <body>
 
-<!-- 배경음 / 효과음 -->
+<!-- 배경음 -->
 <audio
   id="bgMusic"
-  src="dreamy-bg.mp3.mp3"
+  src="dreamy-bg.mp3"
   loop
   preload="auto">
 </audio>
 
+<!-- 단추 효과음 -->
 <audio
   id="buttonSfx"
-  src="button-pop.mp3.mp3"
+  src="button-pop.mp3"
   preload="auto">
 </audio>
 
@@ -255,16 +265,22 @@ h1,h2{
 
 <section id="start" class="screen active">
 
-  <div class="logo">UNBUTTON 2027</div>
+  <div class="logo">
+    UNBUTTON 2027
+  </div>
 
-  <div class="title">단추 게임</div>
+  <div class="title">
+    단추 게임
+  </div>
 
   <p class="sub">
     30개의 단추를 최대한 빠르게 풀어주세요.<br>
     최고 기록에 도전하세요!
   </p>
 
-  <button class="btn" onclick="go('nickname')">
+  <button
+    class="btn"
+    onclick="go('nickname')">
     START
   </button>
 
@@ -273,7 +289,9 @@ h1,h2{
 
 <section id="nickname" class="screen">
 
-  <div class="logo">WHO ARE YOU?</div>
+  <div class="logo">
+    WHO ARE YOU?
+  </div>
 
   <h2 style="color:#fff">
     닉네임을 입력해주세요.
@@ -285,14 +303,15 @@ h1,h2{
       id="nicknameInput"
       class="input"
       maxlength="12"
-      placeholder="최대 12자"
-    >
+      placeholder="최대 12자">
 
   </div>
 
   <div id="nickError" class="error"></div>
 
-  <button class="btn" onclick="startGame()">
+  <button
+    class="btn"
+    onclick="startGame()">
     게임 시작
   </button>
 
@@ -311,7 +330,10 @@ h1,h2{
 
   </div>
 
-  <div id="arena" class="arena"></div>
+  <div
+    id="arena"
+    class="arena">
+  </div>
 
 </section>
 
@@ -343,8 +365,7 @@ h1,h2{
       type="email"
       inputmode="email"
       autocomplete="email"
-      placeholder="이메일을 입력해주세요"
-    >
+      placeholder="이메일을 입력해주세요">
 
   </div>
 
@@ -352,8 +373,7 @@ h1,h2{
 
     <input
       id="consent"
-      type="checkbox"
-    >
+      type="checkbox">
 
     <span>
       개인정보 수집 및 이용에 동의합니다.
@@ -362,16 +382,20 @@ h1,h2{
 
   </label>
 
-  <div id="infoError" class="error"></div>
+  <div
+    id="infoError"
+    class="error">
+  </div>
 
-  <button class="btn" onclick="submitScore()">
+  <button
+    class="btn"
+    onclick="submitScore()">
     기록 등록
   </button>
 
   <div
     class="link"
-    onclick="showLeaderboard()"
-  >
+    onclick="showLeaderboard()">
     기록 등록 없이 랭킹 보기
   </div>
 
@@ -392,12 +416,14 @@ h1,h2{
     불러오는 중...
   </div>
 
-  <p id="boardError" class="error"></p>
+  <p
+    id="boardError"
+    class="error">
+  </p>
 
   <button
     class="btn"
-    onclick="go('start')"
-  >
+    onclick="go('start')">
     다시 하기
   </button>
 
@@ -406,7 +432,8 @@ h1,h2{
 </main>
 
 
-<script src="https://cdn.jsdelivr.net/npm/@Supabase/supabase-js@2"></script>
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
 
@@ -467,14 +494,13 @@ function startGame(){
     nickname;
 
 
+  /* 배경음 시작 */
   const bg =
     $('bgMusic');
-
 
   bg.volume = 0.38;
 
   bg.currentTime = 0;
-
 
   bg.play().catch(err => {
 
@@ -539,6 +565,7 @@ function buildGame(){
 
     b.onclick = () => {
 
+      /* 단추 효과음 */
       const sfx =
         $('buttonSfx');
 
@@ -615,8 +642,8 @@ function finish(){
   $('bgMusic').pause();
 
 
-  setTimeout(() =>
-    go('info'),
+  setTimeout(
+    () => go('info'),
     300
   );
 
@@ -667,7 +694,7 @@ async function submitScore(){
 
         nickname,
         email,
-        seconds: record,
+        seconds:record,
         consent_at:
           new Date().toISOString()
 
